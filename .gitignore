@@ -20,7 +20,6 @@ __pycache__/
 
 # Jupyter Notebook
 .ipynb_checkpoints/
-*.ipynb
 
 # OS files
 .DS_Store
@@ -32,10 +31,8 @@ logs/
 
 # Data
 data/
-*.csv
-*.xlsx
-*.json
-*.txt
+# 注意：不使用通配符忽略常见文件，避免误伤重要文件
+# 如果需要忽略特定的数据文件，请在 data/ 目录中放置或明确指定文件名
 
 # Build artifacts
 dist/
