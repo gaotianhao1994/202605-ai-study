@@ -2,24 +2,25 @@
 """
 Hello World 演示程序
 这是一个用于PR学习的简单示例
+支持中英文双语问候
 """
 
-def greet(name: str = "世界") -> str:
+def greet(name: str = "World") -> str:
     """
     生成问候语
     
     Args:
-        name: 要问候的名字，默认为 "世界"
+        name: 要问候的名字，默认为 "World"
     
     Returns:
-        问候语字符串
+        问候语字符串（中英文）
     """
-    return f"你好，{name}！"
+    return f"Hello, {name}! / 你好，{name}！"
 
 def main():
     """主函数"""
     print("=" * 30)
-    print("  你好世界 演示程序")
+    print("  Greetings Demo / 你好世界 演示程序")
     print("=" * 30)
     
     # 测试基本问候
