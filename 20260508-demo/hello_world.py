@@ -47,4 +47,5 @@ def main():
     print("\n✓ 演示完成！")
 
 if __name__ == "__main__":
+    print("🎉 欢迎使用！")
     main()
