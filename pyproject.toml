@@ -5,26 +5,13 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ai-study-demos"
 version = "1.0.0"
-description = "AI学习演示项目集合"
+description = "AI study demos collection"
 requires-python = ">=3.8"
-authors = [
-    {name = "Developer", email = "developer@example.com"}
-]
 dependencies = [
     "tiktoken>=0.6.0",
     "sentence-transformers>=2.7.0",
     "numpy>=1.26.0",
 ]
-
-[tool.setuptools]
-package-dir = {"": "src"}
-
-[tool.setuptools.packages.find]
-where = ["src"]
-include = ["*"]
-
-[tool.setuptools.package-data]
-"*" = ["*.txt", "*.md", "*.json"]
 
 [project.optional-dependencies]
 dev = [
