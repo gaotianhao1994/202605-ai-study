@@ -12,10 +12,6 @@ __pycache__/
 .Python
 
 # IDE files
-.vscode/
-!.vscode/extensions.json
-!.vscode/launch.json
-!.vscode/settings.json
 .idea/
 *.swp
 *.swo
