@@ -3,5 +3,12 @@
     "python.venvPath": "${workspaceFolder}/.venv",
     "python.analysis.extraPaths": [
         "${workspaceFolder}/src"
-    ]
+    ],
+    "terminal.integrated.profiles.linux": {
+        "bash": {
+            "path": "bash",
+            "args": ["-c", "source ${workspaceFolder}/.venv/bin/activate && exec bash"]
+        }
+    },
+    "terminal.integrated.defaultProfile.linux": "bash"
 }
