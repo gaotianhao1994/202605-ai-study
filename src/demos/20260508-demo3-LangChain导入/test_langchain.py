@@ -6,10 +6,10 @@ LangChain 安装测试脚本
 """
 
 try:
-    # 新版本 LangChain 的正确导入方式
+    # LangChain 1.x 新版导入方式
     from langchain_openai import ChatOpenAI
-    from langchain.chains import LLMChain
-    from langchain.prompts import ChatPromptTemplate
+    from langchain_core.prompts import ChatPromptTemplate
+    from langchain_core.runnables import RunnablePassthrough
     
     print("✅ LangChain 核心模块导入成功")
     
