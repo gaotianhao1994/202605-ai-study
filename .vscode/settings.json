@@ -7,7 +7,7 @@
     "terminal.integrated.profiles.linux": {
         "bash": {
             "path": "bash",
-            "args": ["-c", "source ${workspaceFolder}/.venv/bin/activate && exec bash"]
+            "args": ["-c", "source ${workspaceFolder}/.venv/bin/activate && exec bash -i"]
         }
     },
     "terminal.integrated.defaultProfile.linux": "bash"
