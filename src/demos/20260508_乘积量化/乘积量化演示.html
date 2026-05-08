@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>乘积量化可视化演示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .section-title {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        .vector-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .dimension-box {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .dimension-box:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.5);
+        }
+        .split-line {
+            width: 40px;
+            height: 3px;
+            background: #ddd;
+            margin: 0 10px;
+        }
+        .subvector-group {
+            display: flex;
+            gap: 10px;
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 2px solid #667eea;
+        }
+        .subvector-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 8px;
+            text-align: center;
+        }
+        .cluster-section {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+        }
+        .cluster-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+        .cluster-circle:hover {
+            transform: scale(1.2);
+        }
+        .cluster-1 { background: #ff6b6b; }
+        .cluster-2 { background: #4ecdc4; }
+        .cluster-3 { background: #ffe66d; color: #333; }
+        .cluster-4 { background: #a29bfe; }
+        .cluster-center {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            border: 3px solid currentColor;
+        }
+        .arrow {
+            font-size: 2rem;
+            color: #667eea;
+            margin: 0 20px;
+        }
+        .codebook-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .codebook-table th, .codebook-table td {
+            border: 2px solid #667eea;
+            padding: 12px;
+            text-align: center;
+        }
+        .codebook-table th {
+            background: #667eea;
+            color: white;
+        }
+        .codebook-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .comparison-box {
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .original-box {
+            background: #ffeaa7;
+        }
+        .encoded-box {
+            background: #81ecec;
+        }
+        .size-badge {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2d3436;
+        }
+        .size-label {
+            font-size: 0.9rem;
+            color: #636e72;
+            margin-top: 5px;
+        }
+        .compress-rate {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #667eea;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .visual-2d {
+            width: 300px;
+            height: 300px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            position: relative;
+            margin: 0 auto;
+            border: 2px solid #667eea;
+        }
+        .point {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .data-point {
+            background: #ff6b6b;
+        }
+        .center-point {
+            background: #74b9ff;
+            width: 20px;
+            height: 20px;
+            border: 3px solid white;
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .legend-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+        .process-flow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .step-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 150px;
+            transition: transform 0.3s;
+        }
+        .step-box:hover {
+            transform: translateY(-5px);
+        }
+        .step-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .step-title {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 乘积量化 (Product Quantization) 可视化</h1>
+
+        <!-- 流程概览 -->
+        <div class="card">
+            <h2 class="section-title">🔄 核心流程</h2>
+            <div class="process-flow">
+                <div class="step-box">
+                    <div class="step-number">1</div>
+                    <div class="step-title">拆分向量</div>
+                </div>
+                <span class="arrow">→</span>
+                <div class="step-box">
+                    <div class="step-number">2</div>
+                    <div class="step-title">构建码本</div>
+                </div>
+                <span class="arrow">→</span>
+                <div class="step-box">
+                    <div class="step-number">3</div>
+                    <div class="step-title">编码存储</div>
+                </div>
+                <span class="arrow">→</span>
+                <div class="step-box">
+                    <div class="step-number">4</div>
+                    <div class="step-title">快速查询</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 向量拆分演示 -->
+        <div class="card">
+            <h2 class="section-title">📊 第一步：向量拆分</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 20px;">将一个高维向量拆分成多个低维子向量</p>
+            <div class="vector-display">
+                <div style="display: flex; gap: 10px;">
+                    <div class="dimension-box">0.23</div>
+                    <div class="dimension-box">0.45</div>
+                </div>
+                <div class="split-line"></div>
+                <div style="display: flex; gap: 10px;">
+                    <div class="dimension-box">0.67</div>
+                    <div class="dimension-box">0.89</div>
+                </div>
+                <div class="split-line"></div>
+                <div style="display: flex; gap: 10px;">
+                    <div class="dimension-box">0.11</div>
+                    <div class="dimension-box">0.34</div>
+                </div>
+                <div class="split-line"></div>
+                <div style="display: flex; gap: 10px;">
+                    <div class="dimension-box">0.56</div>
+                    <div class="dimension-box">0.78</div>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: center; gap: 60px; margin-top: 10px;">
+                <div class="subvector-label">子向量1</div>
+                <div class="subvector-label">子向量2</div>
+                <div class="subvector-label">子向量3</div>
+                <div class="subvector-label">子向量4</div>
+            </div>
+        </div>
+
+        <!-- 聚类演示 -->
+        <div class="card">
+            <h2 class="section-title">🌀 第二步：构建码本（聚类）</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 20px;">对每个子向量空间进行K-Means聚类，找到聚类中心</p>
+
+            <div class="cluster-section">
+                <div class="cluster-circle cluster-1">
+                    <span style="position: relative; z-index: 1;">C₁</span>
+                    <div class="cluster-center"></div>
+                </div>
+                <div class="cluster-circle cluster-2">
+                    <span style="position: relative; z-index: 1;">C₂</span>
+                    <div class="cluster-center"></div>
+                </div>
+                <div class="cluster-circle cluster-3">
+                    <span style="position: relative; z-index: 1;">C₃</span>
+                    <div class="cluster-center"></div>
+                </div>
+                <div class="cluster-circle cluster-4">
+                    <span style="position: relative; z-index: 1;">C₄</span>
+                    <div class="cluster-center"></div>
+                </div>
+            </div>
+
+            <!-- 2D可视化 -->
+            <div class="visual-2d">
+                <!-- 数据点 -->
+                <div class="point data-point" style="top: 50px; left: 80px;"></div>
+                <div class="point data-point" style="top: 70px; left: 100px;"></div>
+                <div class="point data-point" style="top: 60px; left: 120px;"></div>
+
+                <div class="point data-point" style="top: 150px; left: 200px;"></div>
+                <div class="point data-point" style="top: 170px; left: 180px;"></div>
+                <div class="point data-point" style="top: 160px; left: 220px;"></div>
+
+                <div class="point data-point" style="top: 220px; left: 60px;"></div>
+                <div class="point data-point" style="top: 240px; left: 80px;"></div>
+                <div class="point data-point" style="top: 230px; left: 100px;"></div>
+
+                <div class="point data-point" style="top: 80px; left: 240px;"></div>
+                <div class="point data-point" style="top: 100px; left: 260px;"></div>
+                <div class="point data-point" style="top: 90px; left: 280px;"></div>
+
+                <!-- 聚类中心 -->
+                <div class="point center-point" style="top: 60px; left: 100px;"></div>
+                <div class="point center-point" style="top: 160px; left: 200px;"></div>
+                <div class="point center-point" style="top: 230px; left: 80px;"></div>
+                <div class="point center-point" style="top: 90px; left: 260px;"></div>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: #ff6b6b;"></div>
+                    <span>数据点</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: #74b9ff;"></div>
+                    <span>聚类中心</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 码本展示 -->
+        <div class="card">
+            <h2 class="section-title">📖 第三步：码本与编码</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 20px;">用聚类中心编号代替原始向量</p>
+
+            <table class="codebook-table">
+                <tr>
+                    <th>编号 (ID)</th>
+                    <th>聚类中心向量</th>
+                </tr>
+                <tr>
+                    <td>0</td>
+                    <td>[0.20, 0.40]</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>[0.65, 0.85]</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>[0.10, 0.30]</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>[0.55, 0.75]</td>
+                </tr>
+            </table>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+                    <div class="subvector-group">
+                        <div class="dimension-box">0.23</div>
+                        <div class="dimension-box">0.45</div>
+                    </div>
+                    <span class="arrow">→</span>
+                    <div class="dimension-box" style="background: #fdcb6e; color: #333;">0</div>
+                </div>
+                <p style="color: #666; margin-top: 10px;">找到最近的聚类中心 → 用编号代替</p>
+            </div>
+        </div>
+
+        <!-- 压缩效果对比 -->
+        <div class="card">
+            <h2 class="section-title">📈 第四步：压缩效果</h2>
+            <div class="comparison-grid">
+                <div class="comparison-box original-box">
+                    <div class="size-badge">32 字节</div>
+                    <div class="size-label">原始向量 (8个float)</div>
+                    <div style="margin-top: 15px; font-family: monospace; font-size: 0.8rem; color: #666;">
+                        [0.23, 0.45, 0.67, 0.89, 0.11, 0.34, 0.56, 0.78]
+                    </div>
+                </div>
+                <div class="comparison-box encoded-box">
+                    <div class="size-badge">4 字节</div>
+                    <div class="size-label">编码后 (4个编号)</div>
+                    <div style="margin-top: 15px; font-family: monospace; font-size: 0.8rem; color: #666;">
+                        [0, 1, 2, 3]
+                    </div>
+                </div>
+            </div>
+            <div class="compress-rate">
+                ✨ 压缩率: 8 倍！
+            </div>
+        </div>
+
+        <!-- 应用场景 -->
+        <div class="card">
+            <h2 class="section-title">💡 应用场景</h2>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                <div style="background: #667eea; color: white; padding: 20px; border-radius: 12px; text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: 10px;">🖼️</div>
+                    <div style="font-weight: bold;">以图搜图</div>
+                    <div style="font-size: 0.9rem; opacity: 0.9; margin-top: 5px;">大规模图像检索</div>
+                </div>
+                <div style="background: #4ecdc4; color: white; padding: 20px; border-radius: 12px; text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: 10px;">🔍</div>
+                    <div style="font-weight: bold;">文档搜索</div>
+                    <div style="font-size: 0.9rem; opacity: 0.9; margin-top: 5px;">语义相似度匹配</div>
+                </div>
+                <div style="background: #ffe66d; color: #333; padding: 20px; border-radius: 12px; text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: 10px;">👤</div>
+                    <div style="font-weight: bold;">人脸识别</div>
+                    <div style="font-size: 0.9rem; opacity: 0.9; margin-top: 5px;">海量人脸比对</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
