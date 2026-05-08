@@ -5,93 +5,93 @@
       "content": "学习编程需要练习和耐心",
       "memory_type": "experience",
       "confidence": 0.9,
-      "created_at": 1778164595.4829047,
-      "accessed_at": 1778164598.4852161,
+      "created_at": 1778221395.7125595,
+      "accessed_at": 1778221398.713803,
       "access_count": 2
     },
     {
       "content": "Python是一种流行的编程语言",
       "memory_type": "fact",
       "confidence": 1.0,
-      "created_at": 1778164595.4829073,
-      "accessed_at": 1778164598.4852223,
+      "created_at": 1778221395.712562,
+      "accessed_at": 1778221398.7138097,
       "access_count": 2
     },
     {
       "content": "坚持每天写代码可以提高编程能力",
       "memory_type": "skill",
       "confidence": 0.85,
-      "created_at": 1778164595.482909,
-      "accessed_at": 1778164598.485226,
+      "created_at": 1778221395.7125638,
+      "accessed_at": 1778221398.7138128,
       "access_count": 2
     },
     {
       "content": "良好的代码注释有助于理解和维护",
       "memory_type": "fact",
       "confidence": 0.95,
-      "created_at": 1778164595.4829102,
-      "accessed_at": 1778164595.4829104,
+      "created_at": 1778221395.712565,
+      "accessed_at": 1778221395.712565,
       "access_count": 1
     },
     {
       "content": "分步骤解决问题更容易成功",
       "memory_type": "experience",
       "confidence": 0.9,
-      "created_at": 1778164595.4829116,
-      "accessed_at": 1778164595.4829118,
+      "created_at": 1778221395.7125664,
+      "accessed_at": 1778221395.7125664,
       "access_count": 1
     },
     {
       "content": "Reflection(assessments=4, biases=0, suggestions=1)",
       "memory_type": "fact",
       "confidence": 0.8,
-      "created_at": 1778164595.4832919,
-      "accessed_at": 1778164595.4832919,
+      "created_at": 1778221395.7128294,
+      "accessed_at": 1778221395.7128294,
       "access_count": 1
     },
     {
       "content": "问题: 如何学习编程？ -> 解决方案: 方法B：分步执行 学习编程？ -> 质量评分: 0.80",
       "memory_type": "experience",
       "confidence": 0.7999999999999999,
-      "created_at": 1778164595.4833963,
-      "accessed_at": 1778164598.4852417,
+      "created_at": 1778221395.7128494,
+      "accessed_at": 1778221398.7138271,
       "access_count": 2
     },
     {
       "content": "Reflection(assessments=4, biases=0, suggestions=1)",
       "memory_type": "fact",
       "confidence": 0.8,
-      "created_at": 1778164596.484055,
-      "accessed_at": 1778164596.4840553,
+      "created_at": 1778221396.7132025,
+      "accessed_at": 1778221396.7132027,
       "access_count": 1
     },
     {
-      "content": "问题: 什么是人工智能？ -> 解决方案: 定义A：从字典/知识库中查找 '什么是人工智能？' 的定义 -> 质量评分: 0.80",
+      "content": "问题: 什么是人工智能？ -> 解决方案: 定义C：结合多个来源综合解释 '什么是人工智能？' -> 质量评分: 0.80",
       "memory_type": "experience",
       "confidence": 0.7999999999999999,
-      "created_at": 1778164596.4841917,
-      "accessed_at": 1778164596.484192,
+      "created_at": 1778221396.7132287,
+      "accessed_at": 1778221396.713229,
       "access_count": 1
     },
     {
-      "content": "Reflection(assessments=4, biases=0, suggestions=0)",
+      "content": "Reflection(assessments=4, biases=0, suggestions=1)",
       "memory_type": "fact",
       "confidence": 0.8,
-      "created_at": 1778164597.4848642,
-      "accessed_at": 1778164597.4848642,
+      "created_at": 1778221397.7136433,
+      "accessed_at": 1778221397.7136433,
       "access_count": 1
     },
     {
-      "content": "问题: 为什么需要自我反思？ -> 解决方案: 定义B：根据已有知识总结 '为什么需要自我反思？' 的含义 -> 质量评分: 0.86",
+      "content": "问题: 为什么需要自我反思？ -> 解决方案: 定义A：从字典/知识库中查找 '为什么需要自我反思？' 的定义 -> 质量评分: 0.80",
       "memory_type": "experience",
-      "confidence": 0.8624999999999999,
-      "created_at": 1778164597.4849598,
-      "accessed_at": 1778164597.4849598,
+      "confidence": 0.7999999999999999,
+      "created_at": 1778221397.7136657,
+      "accessed_at": 1778221397.7136657,
       "access_count": 1
     }
   ],
   "metadata": {
-    "saved_at": 1778164598.485413,
+    "saved_at": 1778221398.7138789,
     "short_term_count": 0,
     "long_term_count": 11
   }

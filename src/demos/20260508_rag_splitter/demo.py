@@ -22,15 +22,17 @@ import sys
 # 添加项目路径到Python路径
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from src import (
+from src.splitters import (
     CharacterSplitter,
     TokenSplitter,
     SemanticSplitter,
     SentenceSplitter,
+)
+from src.utils import (
     read_file,
     print_chunk_info,
     display_chunks,
-    compare_splitters
+    compare_splitters,
 )
 
 
