@@ -1,5 +1,4 @@
 # Virtual environment
-ai_env/
 venv/
 .env/
 .env.local
@@ -13,6 +12,8 @@ __pycache__/
 
 # IDE files
 .vscode/
+!.vscode/extensions.json
+!.vscode/launch.json
 .idea/
 *.swp
 *.swo
@@ -29,11 +30,6 @@ Thumbs.db
 *.log
 logs/
 
-# Data
-data/
-# 注意：不使用通配符忽略常见文件，避免误伤重要文件
-# 如果需要忽略特定的数据文件，请在 data/ 目录中放置或明确指定文件名
-
 # Build artifacts
 dist/
 build/
@@ -47,3 +43,8 @@ htmlcov/
 # Environment variables
 .env
 .secret
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.next/
