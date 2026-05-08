@@ -30,9 +30,8 @@ Thumbs.db
 logs/
 
 # Data
-data/
-# 注意：不使用通配符忽略常见文件，避免误伤重要文件
-# 如果需要忽略特定的数据文件，请在 data/ 目录中放置或明确指定文件名
+# data/ 目录已取消忽略，示例文档需要被版本控制追踪
+# 如果需要忽略特定的数据文件，请在 data/ 目录中放置 .gitignore 或明确指定文件名
 
 # Build artifacts
 dist/

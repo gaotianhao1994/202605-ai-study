@@ -238,9 +238,7 @@ rsa==4.9.1
 scikit-learn==1.8.0
 scipy==1.17.1
 SecretStorage==3.4.0
-selinux @ file:///builddir/build/BUILD/libselinux-3.5/src
 Send2Trash==2.1.0
-sepolicy @ file:///builddir/build/BUILD/selinux-3.5/python/sepolicy
 setools==4.4.2
 shellingham==1.5.4
 simplejson==3.20.2
@@ -290,3 +288,12 @@ yarl==1.22.0
 yfinance==0.2.28
 zipp==3.23.0
 zstandard==0.25.0
+langchain==0.1.10
+langchain-community==0.0.23
+tiktoken==0.6.0
+sentence-transformers==2.7.0
+transformers==4.38.2
+torch==2.2.1
+jieba==0.42.1
+matplotlib==3.8.3
+seaborn==0.13.2
