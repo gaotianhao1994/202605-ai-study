@@ -20,6 +20,7 @@ from config import get_config
 from logger import setup_logger
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate, ChatPromptTemplate
+from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 
 logger = setup_logger('chapter3_prompts')
 
@@ -263,6 +264,117 @@ def fibonacci(n):
         print(f"\n❌ 代码解释器模板演示失败: {e}")
 
 
+def demo_message_types():
+    """
+    演示消息类型：SystemMessage, HumanMessage, AIMessage
+    
+    手动创建消息对象，提供更精细的控制
+    """
+    print("\n" + "=" * 60)
+    print("演示 5: 消息类型 - SystemMessage, HumanMessage, AIMessage")
+    print("=" * 60)
+    
+    logger.info("开始演示消息类型")
+    
+    try:
+        messages = [
+            SystemMessage(content="你是一个专业的Python编程导师，擅长用简单易懂的方式解释概念。"),
+            HumanMessage(content="什么是列表推导式？请举例说明。")
+        ]
+        
+        logger.info("创建消息对象:")
+        for msg in messages:
+            logger.info(f"  {type(msg).__name__}: {msg.content[:50]}...")
+        
+        print("\n消息列表:")
+        print("-" * 60)
+        for msg in messages:
+            print(f"{type(msg).__name__}: {msg.content}")
+        print("-" * 60)
+        
+        llm = create_model(temperature=0.7)
+        
+        logger.info("调用模型...")
+        start_time = time.time()
+        response = llm.invoke(messages)
+        elapsed_time = time.time() - start_time
+        
+        logger.info(f"模型调用成功，耗时 {elapsed_time:.2f}s")
+        
+        print("\nAI 的回答:")
+        print("-" * 60)
+        print(response.content)
+        print("-" * 60)
+        
+        print("\n💡 知识点:")
+        print("  - SystemMessage: 设置AI的角色和行为")
+        print("  - HumanMessage: 用户的输入")
+        print("  - AIMessage: AI的回复（用于多轮对话历史）")
+        
+        print(f"\n✅ 消息类型演示成功！耗时 {elapsed_time:.2f}s")
+        
+    except Exception as e:
+        logger.error(f"❌ 消息类型演示失败: {e}", exc_info=True)
+        print(f"\n❌ 消息类型演示失败: {e}")
+
+
+def demo_multi_turn_conversation():
+    """
+    演示多轮对话场景
+    
+    使用 AIMessage 构建对话历史
+    """
+    print("\n" + "=" * 60)
+    print("演示 6: 多轮对话 - 使用 AIMessage 构建对话历史")
+    print("=" * 60)
+    
+    logger.info("开始演示多轮对话")
+    
+    try:
+        conversation = [
+            SystemMessage(content="你是一个友好的旅行顾问，专注于推荐亚洲旅游目的地。"),
+            HumanMessage(content="我想去日本旅游，有什么推荐的地方吗？"),
+            AIMessage(content="日本有很多值得一游的地方！我推荐东京、京都和大阪。东京有现代都市风光，京都有传统寺庙，大阪有美食文化。"),
+            HumanMessage(content="那韩国呢？")
+        ]
+        
+        logger.info("构建多轮对话历史:")
+        for i, msg in enumerate(conversation, 1):
+            logger.info(f"  {i}. {type(msg).__name__}: {msg.content[:50]}...")
+        
+        print("\n对话历史:")
+        print("-" * 60)
+        for i, msg in enumerate(conversation, 1):
+            role = type(msg).__name__.replace("Message", "")
+            print(f"{i}. [{role}] {msg.content}")
+        print("-" * 60)
+        
+        llm = create_model(temperature=0.7)
+        
+        logger.info("调用模型...")
+        start_time = time.time()
+        response = llm.invoke(conversation)
+        elapsed_time = time.time() - start_time
+        
+        logger.info(f"模型调用成功，耗时 {elapsed_time:.2f}s")
+        
+        print("\nAI 的回答:")
+        print("-" * 60)
+        print(response.content)
+        print("-" * 60)
+        
+        print("\n💡 知识点:")
+        print("  - AIMessage 用于保存之前的对话历史")
+        print("  - 模型可以基于完整上下文生成连贯的回复")
+        print("  - 多轮对话需要维护消息列表")
+        
+        print(f"\n✅ 多轮对话演示成功！耗时 {elapsed_time:.2f}s")
+        
+    except Exception as e:
+        logger.error(f"❌ 多轮对话演示失败: {e}", exc_info=True)
+        print(f"\n❌ 多轮对话演示失败: {e}")
+
+
 def main():
     """
     主函数：运行所有提示词模板演示
@@ -284,6 +396,8 @@ def main():
         ("ChatPromptTemplate", demo_chat_prompt_template),
         ("翻译助手模板", demo_translation_template),
         ("代码解释器模板", demo_code_explainer),
+        ("消息类型", demo_message_types),
+        ("多轮对话", demo_multi_turn_conversation),
     ]
     
     for name, demo_func in demos:
