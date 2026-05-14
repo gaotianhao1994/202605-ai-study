@@ -19,9 +19,8 @@ sys.path.insert(0, str(Path(__file__).parent))
 from config import get_config
 from logger import setup_logger
 from langchain_openai import ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate
-from langchain.memory import ConversationBufferMemory
-from langchain.chains import ConversationChain
+from langchain_core.chat_history import InMemoryChatMessageHistory
+from langchain_core.messages import HumanMessage, AIMessage
 
 logger = setup_logger('chapter6_integration')
 
@@ -52,13 +51,7 @@ class StudyAssistant:
             temperature=temperature
         )
         
-        self.memory = ConversationBufferMemory()
-        
-        self.conversation = ConversationChain(
-            llm=self.llm,
-            memory=self.memory,
-            verbose=False
-        )
+        self.chat_history = InMemoryChatMessageHistory()
         
         logger.info("智能学习助手初始化完成")
     
@@ -74,18 +67,23 @@ class StudyAssistant:
         """
         logger.info(f"用户输入: {user_input}")
         
+        self.chat_history.add_user_message(user_input)
+        
         start_time = time.time()
-        response = self.conversation.predict(input=user_input)
+        messages = self.chat_history.messages
+        response = self.llm.invoke(messages)
         elapsed_time = time.time() - start_time
+        
+        self.chat_history.add_ai_message(response.content)
         
         logger.info(f"AI 回复成功，耗时 {elapsed_time:.2f}s")
         
-        return response
+        return response.content
     
     def clear_memory(self):
         """清空对话记忆"""
         logger.info("清空对话记忆")
-        self.memory.clear()
+        self.chat_history.clear()
 
 
 def create_study_assistant(temperature: float = 0.7) -> StudyAssistant:
