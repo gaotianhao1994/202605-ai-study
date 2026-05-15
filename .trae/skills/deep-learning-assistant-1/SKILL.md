@@ -1,5 +1,5 @@
 ---
-name: deep-learning-assistant-original
+name: deep-learning-assistant-1
 description: Use when helping users learn deep learning concepts with multi-level explanations, knowledge graph connections, and comprehension verification
 ---
 

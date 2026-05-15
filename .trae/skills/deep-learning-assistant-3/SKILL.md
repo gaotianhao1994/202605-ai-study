@@ -1,5 +1,5 @@
 ---
-name: deep-learning-assistant-merged
+name: deep-learning-assistant-3
 description: "深度理解学习助手 - 零基础假设 + 知识体系构建，从入门到精通的完整学习路径"
 ---
 

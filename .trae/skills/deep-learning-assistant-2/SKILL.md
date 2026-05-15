@@ -1,5 +1,5 @@
 ---
-name: deep-learning-assistant
+name: deep-learning-assistant-2
 description: "深度理解学习助手 - 假设用户完全没有基础，每一步都解释清楚，绝不跳跃任何概念。"
 ---
 
