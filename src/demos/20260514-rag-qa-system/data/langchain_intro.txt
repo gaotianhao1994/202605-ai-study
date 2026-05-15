@@ -1,0 +1,84 @@
+LangChain框架入门介绍
+
+一、什么是LangChain
+
+LangChain是一个用于开发大语言模型（LLM）应用的开源框架。它提供了一套标准化的接口和组件，帮助开发者快速构建基于LLM的应用程序。
+
+LangChain的核心价值：
+1. 组件抽象：将LLM应用的常见模式抽象为可复用组件
+2. 链式调用：支持将多个组件串联成处理流水线
+3. 数据感知：让LLM能够连接外部数据源
+4. 智能代理：让LLM能够使用工具与外界交互
+
+LangChain支持多种LLM提供商，包括OpenAI、阿里云百炼、Anthropic等，通过统一的接口适配不同的模型服务。
+
+二、LangChain核心组件
+
+1. Model I/O（模型输入输出）
+- LLM：纯文本输入输出的语言模型
+- Chat Model：基于消息格式的对话模型
+- Prompt Template：提示词模板，支持变量替换
+- Output Parser：输出解析器，将LLM输出结构化
+
+2. Retrieval（检索）
+- Document Loaders：文档加载器，支持多种文件格式
+- Text Splitters：文本分割器，将长文档切分为小块
+- Embeddings：嵌入模型，将文本转换为向量
+- Vector Stores：向量存储，保存和检索向量
+- Retrievers：检索器，根据查询返回相关文档
+
+3. Chains（链）
+- LCEL（LangChain Expression Language）：使用管道操作符|组合组件
+- RetrievalQA：检索增强问答链
+- ConversationChain：对话链
+
+4. Memory（记忆）
+- ConversationBufferMemory：保存完整对话历史
+- ConversationBufferWindowMemory：只保留最近K轮对话
+
+5. Agents（代理）
+- 能够根据输入动态选择工具和行动
+- 支持自定义工具和行动策略
+
+三、LangChain的RAG实现
+
+LangChain为RAG提供了完整的组件支持：
+
+文档加载阶段：使用Document Loaders加载各种格式的文档（TXT、PDF、Markdown、网页等）。每个文档被表示为Document对象，包含page_content（文本内容）和metadata（元数据）。
+
+文本分割阶段：使用Text Splitters将长文档切分为适当大小的文本块。RecursiveCharacterTextSplitter是最常用的分割器，它会递归地尝试不同的分隔符来保持文本的语义完整性。
+
+向量化阶段：使用Embeddings模型将文本块转换为高维向量。这些向量捕获了文本的语义信息，语义相似的文本在向量空间中距离更近。
+
+存储阶段：使用Vector Stores（如FAISS、Chroma）存储文本向量。FAISS是Facebook开源的高效向量搜索库，支持十亿级别的向量检索。
+
+检索阶段：使用Retrievers根据用户问题检索最相关的文本块。支持多种检索策略：相似度搜索（找最相似的文档）、MMR搜索（兼顾相关性和多样性）。
+
+生成阶段：使用Chains将检索到的文本块与用户问题组合，发送给LLM生成回答。RetrievalQA是最常用的RAG问答链。
+
+四、LCEL语法
+
+LCEL（LangChain Expression Language）是LangChain的核心语法，使用管道操作符|将组件串联：
+
+prompt | llm | output_parser
+
+这种设计的好处：
+1. 直观：数据流向从左到右，一目了然
+2. 灵活：任意组件都可以组合
+3. 高效：支持流式输出、批量处理、异步执行
+
+五、实际应用场景
+
+1. 企业知识库问答：员工可以自然语言提问，系统从公司文档中检索答案
+2. 客服机器人：基于产品文档和FAQ自动回答客户问题
+3. 学术论文助手：帮助研究者快速查找和理解相关论文
+4. 代码助手：基于代码库文档回答编程问题
+5. 法律咨询：基于法律法规和案例提供初步法律建议
+
+六、最佳实践
+
+1. 文本分割：chunk_size通常设为500-1000，chunk_overlap设为chunk_size的10%-20%
+2. 嵌入模型：选择与目标语言匹配的模型，中文场景优先选择支持中文的模型
+3. 检索策略：默认使用相似度搜索，需要结果多样性时使用MMR
+4. Prompt设计：明确指示LLM基于检索到的上下文回答，避免使用自身知识
+5. 评估：定期评估检索质量和回答质量，持续优化参数
