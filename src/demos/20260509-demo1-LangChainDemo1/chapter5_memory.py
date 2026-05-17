@@ -21,6 +21,31 @@ from logger import setup_logger
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import AIMessage, HumanMessage
 
+# ============================================================================
+# 关于 Memory API 的说明
+# ============================================================================
+#
+# ⚠️ 注意：langchain.memory 模块（如 ConversationBufferMemory）是旧版 API
+#    虽然仍可用，但 LangChain 1.x 推荐使用更简洁的方式管理对话历史
+#
+# ✅ 推荐方式：使用 langchain_core.messages 手动管理消息列表
+#    - 更透明：你完全控制消息的添加和删除
+#    - 更灵活：可以自定义记忆策略（窗口、摘要等）
+#    - 更简洁：不需要额外的 Memory 类
+#
+# 示例：
+#   messages = []
+#   messages.append(HumanMessage(content="你好"))
+#   response = llm.invoke(messages)
+#   messages.append(AIMessage(content=response.content))
+#
+# 对比旧版 API：
+#   from langchain.memory import ConversationBufferMemory  # 不推荐
+#   memory = ConversationBufferMemory(return_messages=True)
+#   memory.save_context({"input": "你好"}, {"output": "你好！"})
+#
+# ============================================================================
+
 logger = setup_logger('chapter5_memory')
 
 

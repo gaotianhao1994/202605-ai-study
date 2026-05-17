@@ -21,6 +21,32 @@
 - LCEL用管道操作符| -> 代码更简洁，数据流向更清晰
 - LCEL天然支持流式输出、批处理、异步 -> RetrievalQA需要额外配置
 - LCEL是函数式编程的思想 -> 组合优于继承，小组件拼装大功能
+
+# ============================================================================
+# 关于 LCEL vs RetrievalQA 的说明
+# ============================================================================
+#
+# ⚠️ 已废弃：langchain.chains 模块
+#    - RetrievalQA, LLMChain 等在 langchain 1.x 中已移除
+#    - 不要使用：from langchain.chains import RetrievalQA
+#
+# ✅ 推荐方式：LCEL (LangChain Expression Language)
+#    - 使用管道操作符 | 连接组件
+#    - 示例：
+#        chain = (
+#            {"context": retriever | format_docs, "question": RunnablePassthrough()}
+#            | prompt
+#            | llm
+#            | StrOutputParser()
+#        )
+#    - 优势：
+#        1. 透明性：每个组件都可见，数据流向清晰
+#        2. 灵活性：可以自由替换任何组件
+#        3. 调试性：可以单独测试每个组件
+#        4. 扩展性：添加组件只需用 | 连接
+#        5. 现代特性：天然支持 stream(), batch(), ainvoke()
+#
+# ============================================================================
 """
 
 import os
